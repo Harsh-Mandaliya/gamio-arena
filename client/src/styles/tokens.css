@@ -1,0 +1,117 @@
+/*
+  Gamio Arena design tokens.
+  The look: a games hall after dark. Pool-felt green, chalk-blue, scoreboard orange,
+  warm paper surfaces and hard ink outlines, like a printed club card.
+*/
+
+:root {
+  --paper: #f3efe6;
+  --paper-2: #e9e3d5;
+  --card: #fffcf5;
+  --card-2: #f8f4ea;
+  --ink: #17201b;
+  --ink-2: #48524c;
+  --ink-3: #7b847e;
+  --line: #17201b;
+  --line-soft: #d8d0bf;
+  --shadow-ink: #17201b;
+
+  --felt: #12684f;
+  --felt-deep: #0b4a38;
+  --felt-soft: #d5e8df;
+  --chalk: #2f6fde;
+  --chalk-soft: #dde7fb;
+  --orange: #ff5a1f;
+  --orange-soft: #ffe2d3;
+  --sun: #ffc93c;
+  --sun-soft: #fff1c9;
+  --berry: #d6336c;
+
+  --ok: #1d8a57;
+  --ok-soft: #d6f0e2;
+  --warn: #b97800;
+  --warn-soft: #fbedc9;
+  --bad: #c3352b;
+  --bad-soft: #f9dcd8;
+
+  --font-display: 'Bricolage Grotesque Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Inter Tight Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  --r-lg: 20px;
+  --r: 14px;
+  --r-sm: 9px;
+  --r-pill: 999px;
+
+  --border: 1.5px solid var(--line);
+  --shadow-sm: 2px 2px 0 var(--shadow-ink);
+  --shadow: 4px 4px 0 var(--shadow-ink);
+  --shadow-lg: 7px 7px 0 var(--shadow-ink);
+
+  --gutter: clamp(16px, 4vw, 40px);
+  --max: 1200px;
+  --header-h: 68px;
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #101613;
+    --paper-2: #161e1a;
+    --card: #1a231f;
+    --card-2: #202a25;
+    --ink: #efeadf;
+    --ink-2: #b9c0ba;
+    --ink-3: #87908a;
+    --line: #3d4a43;
+    --line-soft: #2c3732;
+    --shadow-ink: #050807;
+    --felt: #2fa57d;
+    --felt-deep: #0e3a2c;
+    --felt-soft: #183a2e;
+    --chalk: #6d9cf0;
+    --chalk-soft: #1d2a44;
+    --orange: #ff7a45;
+    --orange-soft: #3b2219;
+    --sun: #ffd25e;
+    --sun-soft: #3a3118;
+    --ok: #4cc48a;
+    --ok-soft: #173326;
+    --warn: #f0b33c;
+    --warn-soft: #3a2e13;
+    --bad: #ff7a6e;
+    --bad-soft: #3d1d1a;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --paper: #101613;
+  --paper-2: #161e1a;
+  --card: #1a231f;
+  --card-2: #202a25;
+  --ink: #efeadf;
+  --ink-2: #b9c0ba;
+  --ink-3: #87908a;
+  --line: #3d4a43;
+  --line-soft: #2c3732;
+  --shadow-ink: #050807;
+  --felt: #2fa57d;
+  --felt-deep: #0e3a2c;
+  --felt-soft: #183a2e;
+  --chalk: #6d9cf0;
+  --chalk-soft: #1d2a44;
+  --orange: #ff7a45;
+  --orange-soft: #3b2219;
+  --sun: #ffd25e;
+  --sun-soft: #3a3118;
+  --ok: #4cc48a;
+  --ok-soft: #173326;
+  --warn: #f0b33c;
+  --warn-soft: #3a2e13;
+  --bad: #ff7a6e;
+  --bad-soft: #3d1d1a;
+  color-scheme: dark;
+}

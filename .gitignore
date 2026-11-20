@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+
+# local database and generated secrets
+server/data/
+
+.env
+.env.*
+!.env.example
+
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
