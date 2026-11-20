@@ -161,6 +161,29 @@ function wipe() {
   `);
 }
 
+function insertActivities() {
+  const ids = {};
+  ACTIVITIES.forEach(([name, slug, color, blurb], i) => {
+    ids[slug] = Number(
+      run('INSERT INTO activities (name, slug, icon, color, blurb, sort_order) VALUES (?, ?, ?, ?, ?, ?)',
+        name, slug, slug, color, blurb, i * 10).lastInsertRowid,
+    );
+  });
+  return ids;
+}
+
+/**
+ * First start at a real venue (DEMO_MODE=false): just the game types and one
+ * admin account. Venues, tables and staff are then added from the console.
+ */
+export async function seedEssentials({ email, password, name = 'Owner' }) {
+  const hash = await bcrypt.hash(password, 10);
+  transaction(() => {
+    insertActivities();
+    run("INSERT INTO users (name, email, role, password_hash) VALUES (?, ?, 'admin', ?)", name, email.toLowerCase(), hash);
+  });
+}
+
 export async function seed({ reset = false, now = new Date() } = {}) {
   const hash = await bcrypt.hash(DEMO_PASSWORD, 10);
   const rand = random(20251128);
@@ -169,13 +192,7 @@ export async function seed({ reset = false, now = new Date() } = {}) {
   transaction(() => {
     if (reset) wipe();
 
-    const activityId = {};
-    ACTIVITIES.forEach(([name, slug, color, blurb], i) => {
-      activityId[slug] = Number(
-        run('INSERT INTO activities (name, slug, icon, color, blurb, sort_order) VALUES (?, ?, ?, ?, ?, ?)',
-          name, slug, slug, color, blurb, i * 10).lastInsertRowid,
-      );
-    });
+    const activityId = insertActivities();
 
     const userId = {};
     for (const [name, email, role, , phone] of STAFF) {

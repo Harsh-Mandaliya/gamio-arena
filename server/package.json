@@ -8,6 +8,8 @@
     "dev": "node --watch-path=src src/index.js",
     "start": "node src/index.js",
     "seed": "node src/db/seed.js --reset",
+    "backup": "node src/db/backup.js",
+    "reset-password": "node src/db/reset-password.js",
     "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {

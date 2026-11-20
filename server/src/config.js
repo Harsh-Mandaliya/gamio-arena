@@ -41,6 +41,9 @@ export const config = {
   bookingHorizonDays: Number(env.BOOKING_HORIZON_DAYS ?? 30),
   maxSlotsPerBooking: 4,
   demoMode: env.DEMO_MODE !== 'false',
+  adminEmail: env.ADMIN_EMAIL || 'admin@gamio.local',
+  adminPassword: env.ADMIN_PASSWORD || '',
+  backupDir: path.resolve(serverRoot, env.BACKUP_DIR || 'data/backups'),
   isProduction: env.NODE_ENV === 'production',
   clientDist: path.resolve(serverRoot, '../client/dist'),
 };

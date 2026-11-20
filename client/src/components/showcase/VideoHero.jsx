@@ -25,6 +25,7 @@ export default function VideoHero() {
         loop
         playsInline
         preload="auto"
+        disablePictureInPicture
         aria-hidden="true"
       />
       <div className="vhero__shade" aria-hidden="true" />

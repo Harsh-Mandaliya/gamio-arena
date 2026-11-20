@@ -12,34 +12,37 @@
   color: #fff;
 }
 
+/* gamio-hero.mp4 is 1280x720 with 72px black bars top and bottom (the picture
+   itself is 1280x576). Making the element 125% tall and pulling it up by 12.5%
+   hides exactly those bars, so the footage is never scaled more than it must be. */
 .vhero__video {
   position: absolute;
-  inset: 0;
+  left: 0;
+  top: -12.5%;
   width: 100%;
-  height: 100%;
+  height: 125%;
   object-fit: cover;
-  /* The source clip is letterboxed, watermarked and has a title card baked in.
-     Crop the bars and nudge the frame right so its text sits clear of ours. */
-  transform: scale(1.32) translateX(10%);
-  filter: saturate(1.1) brightness(0.85);
+  /* show the left of the frame; keeps the clip's own title card off our heading */
+  object-position: 0% 50%;
 }
 
 .vhero__shade {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgb(5 8 7 / 0.94) 0%, rgb(5 8 7 / 0.78) 38%, rgb(5 8 7 / 0.25) 75%, rgb(5 8 7 / 0.1) 100%),
-    linear-gradient(0deg, rgb(5 8 7 / 0.75) 0%, transparent 45%),
-    linear-gradient(180deg, rgb(5 8 7 / 0.6) 0%, transparent 22%);
+    linear-gradient(90deg, rgb(5 8 7 / 0.86) 0%, rgb(5 8 7 / 0.6) 34%, rgb(5 8 7 / 0.12) 62%, transparent 82%),
+    linear-gradient(0deg, rgb(5 8 7 / 0.65) 0%, transparent 32%),
+    linear-gradient(180deg, rgb(5 8 7 / 0.5) 0%, transparent 18%);
 }
 
 @media (max-width: 860px) {
+  /* a phone only sees a narrow strip of the frame; keep it left of the title card */
   .vhero__video {
-    transform: scale(1.32);
+    object-position: 12% 50%;
   }
 
   .vhero__shade {
-    background: linear-gradient(0deg, rgb(5 8 7 / 0.92) 0%, rgb(5 8 7 / 0.7) 55%, rgb(5 8 7 / 0.5) 100%);
+    background: linear-gradient(0deg, rgb(5 8 7 / 0.92) 0%, rgb(5 8 7 / 0.72) 50%, rgb(5 8 7 / 0.4) 100%);
   }
 }
 

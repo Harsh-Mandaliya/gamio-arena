@@ -16,7 +16,15 @@ export function createApp() {
 
   app.disable('x-powered-by');
   app.set('trust proxy', 'loopback');
-  app.use(helmet({ crossOriginEmbedderPolicy: false }));
+  app.use(
+    helmet({
+      crossOriginEmbedderPolicy: false,
+      // Venues usually run this over plain http on the local network, so don't
+      // force https for assets or pin HSTS.
+      contentSecurityPolicy: { directives: { upgradeInsecureRequests: null } },
+      strictTransportSecurity: false,
+    }),
+  );
   app.use(express.json({ limit: '100kb' }));
   app.use(identify);
 
