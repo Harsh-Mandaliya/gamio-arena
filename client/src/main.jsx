@@ -14,6 +14,7 @@ import './styles/base.css';
 import './styles/components.css';
 import './styles/site.css';
 import './styles/showcase.css';
+import './styles/video-hero.css';
 import './styles/console.css';
 
 import App from './App.jsx';

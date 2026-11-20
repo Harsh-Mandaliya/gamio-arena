@@ -3,6 +3,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { ActivityIcon, Glyph } from '../../components/ActivityIcon.jsx';
 import VenueCard from '../../components/VenueCard.jsx';
 import GameShowcase from '../../components/showcase/GameShowcase.jsx';
+import VideoHero from '../../components/showcase/VideoHero.jsx';
 import { useApi } from '../../hooks/useApi.js';
 import { usePageTitle } from '../../hooks/usePageTitle.js';
 import { dayLabel, money } from '../../lib/format.js';
@@ -79,18 +80,18 @@ export default function Home() {
 
   return (
     <>
-      <GameShowcase />
+      <VideoHero />
       <section className="hero">
         <div className="wrap hero__grid">
           <div>
             <span className="eyebrow">
               <span className="live-dot" /> Ahmedabad · Vadodara · Surat
             </span>
-            <h1 className="hero__title">
+            <h2 className="hero__title">
               Book the table.
               <br />
               Bring the <span className="scribble">crew.</span>
-            </h1>
+            </h2>
             <p className="hero__lede">
               Pool, table tennis, badminton, bowling, box cricket and more across every Gamio hall. Pick a slot, pay
               from your wallet or at the counter, and walk straight in.
@@ -122,6 +123,8 @@ export default function Home() {
         </div>
         <Ticker activities={activities} />
       </section>
+
+      <GameShowcase />
 
       <section className="section">
         <div className="wrap">
