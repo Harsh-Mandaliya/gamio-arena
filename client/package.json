@@ -1,6 +1,8 @@
 {
   "name": "@gamio/client",
   "version": "2.0.0",
+  "author": "Harsh Mandaliya",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {

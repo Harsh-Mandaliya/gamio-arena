@@ -3,6 +3,8 @@
   "version": "2.0.0",
   "private": true,
   "description": "Book pool tables, table tennis, bowling lanes and more across Gamio Arena venues. Runs fully offline on SQLite.",
+  "author": "Harsh Mandaliya",
+  "license": "MIT",
   "workspaces": [
     "server",
     "client"
