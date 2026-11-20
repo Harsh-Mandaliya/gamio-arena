@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router';
 import { CalendarHeart, Clock3, MessageSquareText, PartyPopper } from 'lucide-react';
 import { post } from '../../api/client.js';
 import Field from '../../components/Field.jsx';
+import PageBand from '../../components/PageBand.jsx';
 import { usePageTitle } from '../../hooks/usePageTitle.js';
 
 const TOPICS = [
@@ -41,13 +42,11 @@ export default function Contact() {
   };
 
   return (
-    <div className="wrap">
-      <header className="page-head">
-        <span className="eyebrow">Say hello</span>
-        <h1 style={{ marginTop: 10 }}>Talk to a human</h1>
+    <>
+      <PageBand eyebrow="Say hello" title="Talk to a human" icon="darts" color="#14254a">
         <p>Questions about a booking, a birthday on the turf, or a weekly slot for your club. We read everything.</p>
-      </header>
-
+      </PageBand>
+    <div className="wrap">
       <div className="contact-grid">
         <div className="card">
           <div className="card__body">
@@ -130,5 +129,6 @@ export default function Contact() {
         </div>
       </div>
     </div>
+    </>
   );
 }

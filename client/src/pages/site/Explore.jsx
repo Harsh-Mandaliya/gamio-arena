@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 import { Search, SearchX } from 'lucide-react';
-import { ActivityIcon, Glyph } from '../../components/ActivityIcon.jsx';
+import { ActivityIcon } from '../../components/ActivityIcon.jsx';
 import EmptyState from '../../components/EmptyState.jsx';
+import PageBand from '../../components/PageBand.jsx';
 import { ErrorNote } from '../../components/PageLoader.jsx';
 import { useApi } from '../../hooks/useApi.js';
 import { usePageTitle } from '../../hooks/usePageTitle.js';
@@ -31,16 +32,22 @@ export default function Explore({ mode = 'play' }) {
   };
 
   return (
-    <div className="wrap">
-      <header className="page-head">
-        <span className="eyebrow">{mode === 'play' ? 'What are we playing?' : 'Four halls, one calendar'}</span>
-        <h1 style={{ marginTop: 10 }}>{mode === 'play' ? 'Pick a game' : 'Find a hall'}</h1>
+    <>
+      <PageBand
+        eyebrow={mode === 'play' ? 'What are we playing?' : 'Four halls, one calendar'}
+        title={current ? current.name : mode === 'play' ? 'Pick a game' : 'Find a hall'}
+        icon={current?.icon ?? (mode === 'play' ? 'console' : 'carrom')}
+        color={current ? `color-mix(in srgb, ${current.color} 70%, #0b1410)` : undefined}
+      >
         <p>
-          {mode === 'play'
-            ? 'Choose a game to see every hall that has it, then pick a table and a time.'
-            : 'Every Gamio hall, what it has, and when it’s open.'}
+          {current
+            ? `${current.blurb}${current.fromPrice != null ? ` From ${money(current.fromPrice)} a slot.` : ''}`
+            : mode === 'play'
+              ? 'Choose a game to see every hall that has it, then pick a table and a time.'
+              : 'Every Gamio hall, what it has, and when it’s open.'}
         </p>
-      </header>
+      </PageBand>
+      <div className="wrap">
 
       <div className="filters">
         <div className="chip-scroll" role="group" aria-label="Game">
@@ -79,22 +86,6 @@ export default function Explore({ mode = 'play' }) {
         </div>
       </div>
 
-      {current && (
-        <div className="activity-banner" style={{ '--tile': current.color }}>
-          <Glyph activity={current} size="lg" />
-          <div style={{ flex: 1 }}>
-            <h2>{current.name}</h2>
-            <p className="muted">{current.blurb}</p>
-          </div>
-          {current.fromPrice != null && (
-            <div className="mono hide-sm" style={{ textAlign: 'right', fontSize: 13 }}>
-              from
-              <br />
-              <strong style={{ fontSize: 22 }}>{money(current.fromPrice)}</strong>
-            </div>
-          )}
-        </div>
-      )}
 
       <ErrorNote error={venues.error} onRetry={venues.reload} />
 
@@ -115,6 +106,7 @@ export default function Explore({ mode = 'play' }) {
           Try another city or clear the search. New halls are added as they open.
         </EmptyState>
       )}
-    </div>
+      </div>
+    </>
   );
 }

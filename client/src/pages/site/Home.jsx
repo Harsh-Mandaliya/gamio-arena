@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { ActivityIcon, Glyph } from '../../components/ActivityIcon.jsx';
+import Reveal from '../../components/Reveal.jsx';
 import VenueCard from '../../components/VenueCard.jsx';
 import GameShowcase from '../../components/showcase/GameShowcase.jsx';
 import VideoHero from '../../components/showcase/VideoHero.jsx';
@@ -71,55 +72,68 @@ function Ticker({ activities }) {
   );
 }
 
+function SectionHead({ index, label, title, children }) {
+  return (
+    <Reveal className="section__head">
+      <div>
+        <span className="section__index">
+          <b>{index}</b> {label}
+        </span>
+        <h2 className="section__title">{title}</h2>
+      </div>
+      {children}
+    </Reveal>
+  );
+}
+
+const STEPS = [
+  ['Pick a game and a hall', 'Filter by what you want to play or by city. Every table shows its price, size and slot length.'],
+  ['Grab one to four slots', 'Weekday afternoons are cheapest. Evenings after 6pm and weekends are peak and marked on the grid.'],
+  ['Show your code at the desk', 'Pay from your wallet or at the counter. Change of plans? Cancel up to two hours before for a wallet refund.'],
+];
+
+const CONSOLE_ROLES = [
+  ['Desk', 'Front-desk board', 'Check players in by code, take walk-ins, mark cash paid and top up wallets.'],
+  ['Manager', 'Tables, prices & blocks', 'Add tables, set peak pricing, and block a slot for a cloth change or a tournament.'],
+  ['Admin', 'People, games & the log', 'Assign roles and venues, add new game types and see who changed what.'],
+];
+
 export default function Home() {
   usePageTitle(null);
-  const { data: highlights } = useApi('/highlights');
   const { data: activities } = useApi('/activities');
   const { data: venues } = useApi('/venues');
-  const stats = highlights?.stats;
 
   return (
     <>
       <VideoHero />
-      <section className="hero">
-        <div className="wrap hero__grid">
-          <div>
-            <span className="eyebrow">
-              <span className="live-dot" /> Ahmedabad · Vadodara · Surat
+
+      <section className="live">
+        <div className="wrap live__grid">
+          <Reveal className="live__copy">
+            <span className="eyebrow live__eyebrow">
+              <span className="live-dot" /> Live across Ahmedabad · Vadodara · Surat
             </span>
-            <h2 className="hero__title">
-              Book the table.
-              <br />
-              Bring the <span className="scribble">crew.</span>
+            <h2 className="live__title">
+              Free in the next <span className="scribble">few hours.</span>
             </h2>
-            <p className="hero__lede">
-              Pool, table tennis, badminton, bowling, box cricket and more across every Gamio hall. Pick a slot, pay
-              from your wallet or at the counter, and walk straight in.
+            <p className="live__lede">
+              Every table, court and lane in every hall runs on one calendar. This board updates as people book, so what
+              you see is what&apos;s actually open.
             </p>
-            <div className="row hero__cta">
-              <Link to="/play" className="btn btn--lg btn--accent">
-                Find a free slot <ArrowRight />
-              </Link>
-              <Link to="/venues" className="btn btn--lg btn--ghost">
-                See the venues
+            <div className="live__chips">
+              {activities?.slice(0, 8).map((a) => (
+                <Link key={a.id} to={`/play?activity=${a.slug}`} className="live__chip" style={{ '--chip': a.color }}>
+                  <ActivityIcon name={a.icon} /> {a.name}
+                </Link>
+              ))}
+              <Link to="/play" className="live__chip live__chip--all">
+                All games <ArrowRight />
               </Link>
             </div>
-            <dl className="hero__stats">
-              <div>
-                <dt>halls</dt>
-                <dd>{stats?.venues ?? '–'}</dd>
-              </div>
-              <div>
-                <dt>tables, courts &amp; lanes</dt>
-                <dd>{stats?.resources ?? '–'}</dd>
-              </div>
-              <div>
-                <dt>games played this week</dt>
-                <dd>{stats?.bookingsThisWeek ?? '–'}</dd>
-              </div>
-            </dl>
-          </div>
-          <NextFreeBoard />
+          </Reveal>
+          <Reveal delay={150}>
+            <NextFreeBoard />
+          </Reveal>
         </div>
         <Ticker activities={activities} />
       </section>
@@ -128,26 +142,36 @@ export default function Home() {
 
       <section className="section">
         <div className="wrap">
-          <div className="section__head">
-            <h2 className="section__title">Twelve games. One account.</h2>
+          <SectionHead index="01" label="The games" title="Twelve games. One account.">
             <p className="section__lede">
-              Every table and court in every hall is on the same calendar, so you can see what&apos;s free before you
-              leave home.
+              Pick what you feel like playing and we&apos;ll show every hall that has it, with live prices and slots.
             </p>
-          </div>
-          <div className="rack">
-            {activities?.map((a) => (
-              <Link key={a.id} to={`/play?activity=${a.slug}`} className="rack__tile" style={{ '--tile': a.color }}>
-                <Glyph activity={a} size="lg" />
-                <h3 style={{ marginTop: 28 }}>{a.name}</h3>
-                <p>{a.blurb}</p>
-                <div className="rack__meta">
-                  <span>{a.resourceCount ? `from ${money(a.fromPrice)}` : 'coming soon'}</span>
-                  <span>
-                    {a.venueCount} {a.venueCount === 1 ? 'hall' : 'halls'}
+          </SectionHead>
+          <div className="bento">
+            {activities?.map((a, i) => (
+              <Reveal
+                key={a.id}
+                delay={(i % 4) * 70}
+                className={`bento__cell ${i === 0 ? 'bento__cell--hero' : ''} ${i === activities.length - 1 ? 'bento__cell--wide' : ''}`}
+              >
+                <Link to={`/play?activity=${a.slug}`} className="bento__tile" style={{ '--tile': a.color }}>
+                  <span className="bento__art" aria-hidden="true">
+                    <ActivityIcon name={a.icon} />
                   </span>
-                </div>
-              </Link>
+                  <span className="bento__top">
+                    <span className="bento__count">{String(i + 1).padStart(2, '0')}</span>
+                    <ArrowUpRight className="bento__arrow" />
+                  </span>
+                  <span className="bento__body">
+                    <h3>{a.name}</h3>
+                    <p>{a.blurb}</p>
+                    <span className="bento__meta">
+                      {a.resourceCount ? `from ${money(a.fromPrice)}` : 'coming soon'} · {a.venueCount}{' '}
+                      {a.venueCount === 1 ? 'hall' : 'halls'}
+                    </span>
+                  </span>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -155,50 +179,39 @@ export default function Home() {
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="section__head">
-            <h2 className="section__title">How it works</h2>
-          </div>
+          <SectionHead index="02" label="How it works" title="Three steps to the table." />
           <div className="stubs">
-            <div className="stub">
-              <span className="stub__num">01</span>
-              <div className="stub__rule" />
-              <h3>Pick a game and a hall</h3>
-              <p>Filter by what you want to play or by city. Every table shows its price, size and slot length.</p>
-            </div>
-            <div className="stub">
-              <span className="stub__num">02</span>
-              <div className="stub__rule" />
-              <h3>Grab one to four slots</h3>
-              <p>Weekday afternoons are cheapest. Evenings after 6pm and weekends are peak and marked on the grid.</p>
-            </div>
-            <div className="stub">
-              <span className="stub__num">03</span>
-              <div className="stub__rule" />
-              <h3>Show your code at the desk</h3>
-              <p>Pay from your wallet or at the counter. Change of plans? Cancel up to two hours before for a wallet refund.</p>
-            </div>
+            {STEPS.map(([title, copy], i) => (
+              <Reveal key={title} delay={i * 120} className="stub">
+                <span className="stub__num">0{i + 1}</span>
+                <div className="stub__rule" />
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="section__head">
-            <h2 className="section__title">The halls</h2>
+          <SectionHead index="03" label="The halls" title="Four halls, one wallet.">
             <Link to="/venues" className="btn btn--ghost">
               All venues <ArrowUpRight />
             </Link>
-          </div>
+          </SectionHead>
           <div className="venue-grid venue-grid--pairs">
-            {venues?.map((v) => (
-              <VenueCard key={v.id} venue={v} />
+            {venues?.map((v, i) => (
+              <Reveal key={v.id} delay={(i % 2) * 120}>
+                <VenueCard venue={v} />
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       <section className="wrap">
-        <div className="pitch">
+        <Reveal className="pitch">
           <div className="pitch__grid">
             <div>
               <span className="pitch__role">For the people behind the counter</span>
@@ -212,30 +225,37 @@ export default function Home() {
               </Link>
             </div>
             <div className="pitch__list">
-              <div className="pitch__item">
-                <span className="pitch__role">Desk</span>
-                <div>
-                  <strong>Front-desk board</strong>
-                  <span>Check players in by code, take walk-ins, mark cash paid and top up wallets.</span>
+              {CONSOLE_ROLES.map(([role, title, copy]) => (
+                <div key={role} className="pitch__item">
+                  <span className="pitch__role">{role}</span>
+                  <div>
+                    <strong>{title}</strong>
+                    <span>{copy}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="pitch__item">
-                <span className="pitch__role">Manager</span>
-                <div>
-                  <strong>Tables, prices &amp; blocks</strong>
-                  <span>Add tables, set peak pricing, and block a slot for a cloth change or a tournament.</span>
-                </div>
-              </div>
-              <div className="pitch__item">
-                <span className="pitch__role">Admin</span>
-                <div>
-                  <strong>People, games &amp; the log</strong>
-                  <span>Assign roles and venues, add new game types and see who changed what.</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
+        </Reveal>
+      </section>
+
+      <section className="wrap" style={{ marginTop: 'clamp(56px, 8vw, 96px)' }}>
+        <Reveal className="closer">
+          <span className="closer__ball" aria-hidden="true">
+            <span>8</span>
+          </span>
+          <h2 className="closer__title">
+            Your table&apos;s
+            <br />
+            waiting.
+          </h2>
+          <div className="closer__side">
+            <p>Most halls have something free in the next hour. Book now, pay at the counter, play tonight.</p>
+            <Link to="/play" className="vhero__btn">
+              Find a free slot <ArrowUpRight />
+            </Link>
+          </div>
+        </Reveal>
       </section>
     </>
   );

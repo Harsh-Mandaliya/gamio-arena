@@ -29,6 +29,9 @@ export default function SiteFooter() {
           <span className="muted">Courts open from 6am</span>
         </div>
       </div>
+      <span className="site-footer__mark" aria-hidden="true">
+        Gamio Arena
+      </span>
       <div className="wrap site-footer__base">
         <span className="mono faint">© {new Date().getFullYear()} Gamio Arena</span>
         <span className="mono faint">Made for long rallies and longer frames.</span>
